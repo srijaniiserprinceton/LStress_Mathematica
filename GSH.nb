@@ -1,0 +1,404 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     16026,        396]
+NotebookOptionsPosition[     15702,        382]
+NotebookOutlinePosition[     16043,        397]
+CellTagsIndexPosition[     16000,        394]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "One", " ", "needs", " ", "to", " ", "evaluate", " ", "the", " ", 
+    "TensorCosmetics", " ", "notebook", " ", "before", " ", "evaluating", " ",
+     "this", " ", "notebook"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"BeginPackage", "[", 
+     RowBox[{"\"\<GSH`\>\"", ",", 
+      RowBox[{"{", "\"\<TensorCosmetics`\>\"", "}"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Unprotect", "@@", 
+     RowBox[{"Names", "[", "\"\<GSH`*\>\"", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"ClearAll", "@@", 
+     RowBox[{"Names", "[", "\"\<GSH`*\>\"", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GSHUnitVector", "::", "usage"}], "=", "\[IndentingNewLine]", 
+     "\"\<GSHUnitVector[] returns the unit vectors \!\(\*SubscriptBox[\(e\), \
+\(-\)]\),\!\(\*SubscriptBox[\(e\), \(\(0\)\(,\)\)]\)\!\(\*SubscriptBox[\(e\), \
+\(+\)]\) as three entries of a rank 2 tensor.\nIt does not admit any \
+argument.\>\""}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"SpheInt", "::", "usage"}], "=", "\[IndentingNewLine]", 
+     "\"\<SpheInt[l1_,l2_,l3_,m1_,m2_,m3_,n1_,n2_,n3_] is used to retrieve \
+the symbolic form of the corresponding GSH integral with the first GSH being \
+conjugated. The results is in terms of the required Wigner-3j's.\>\""}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ThreeJ", "::", "usage"}], "=", "\[IndentingNewLine]", 
+     "\"\<ThreeJ[l1_,l2_,l3_,m1_,m2_,m3_] is used to retrieve the symbolic \
+form of a Wigner-3j\>\""}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Shift", "::", "usage"}], "=", "\[IndentingNewLine]", 
+     "\"\<Shift[T_,q_,r_] returns tensor T wirh entries shifted by q places \
+in r'th index, putting 0's for emergent entries.\>\""}], ";"}], " ", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GradGSH", "::", "usage"}], "=", "\[IndentingNewLine]", 
+     "\"\<GradGSH[T_,l_] returns gradient of tensor T with harmonic order l. \
+rank[gradient] = rank[T]+1\>\""}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Om", "::", "usage"}], "=", "\[IndentingNewLine]", 
+     "\"\<Om[l_,m_] finds the value \!\(\*SqrtBox[\(\*FractionBox[\(1\), \
+\(2\)] \((l \[PlusMinus] N)\) \((\(l \[MinusPlus] N\) + 1)\)\)]\) \>\""}], 
+    " ", ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"r", "::", "usage"}], "=", "\"\<r\>\""}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GSHUnitVector", "[", "]"}], " ", ":=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        FractionBox["1", 
+         SqrtBox["2"]], 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1", ",", 
+          RowBox[{"-", "I"}]}], "}"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "0", ",", "0"}], "}"}], ",", 
+       RowBox[{
+        FractionBox["1", 
+         SqrtBox["2"]], 
+        RowBox[{"{", 
+         RowBox[{"0", ",", 
+          RowBox[{"-", "1"}], ",", 
+          RowBox[{"-", "I"}]}], "}"}]}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"SpheInt", "[", 
+      RowBox[{
+      "l1_", ",", "l2_", ",", "l3_", ",", "m1_", ",", "m2_", ",", "m3_", ",", 
+       "n1_", ",", "n2_", ",", "n3_"}], "]"}], ":=", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        RowBox[{"-", "1"}], ")"}], 
+       RowBox[{"m1", "+", "n1"}]], 
+      RowBox[{"ThreeJ", "[", 
+       RowBox[{"l1", ",", "l2", ",", "l3", ",", 
+        RowBox[{"-", "n1"}], ",", "n2", ",", "n3"}], "]"}], 
+      RowBox[{"ThreeJ", "[", 
+       RowBox[{"l1", ",", "l2", ",", "l3", ",", 
+        RowBox[{"-", "m1"}], ",", "m2", ",", "m3"}], "]"}]}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ThreeJ", "[", 
+     RowBox[{
+     "l1_", ",", "l2_", ",", "l3_", ",", "m1_", ",", "m2_", ",", "m3_"}], 
+     "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "ret", "}"}], ",", 
+      RowBox[{
+       RowBox[{"ret", "=", "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ret", "=", 
+        RowBox[{"MatrixForm", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"l1", ",", "l2", ",", "l3"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"m1", ",", "m2", ",", "m3"}], "}"}]}], "}"}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"Return", "[", "ret", "]"}], ";"}]}], "\[IndentingNewLine]", 
+     "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Om", "[", 
+      RowBox[{"l_", ",", "m_"}], "]"}], ":=", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"m", "<", "0"}], "||", 
+        RowBox[{"m", "\[Equal]", "1"}]}], ",", 
+       RowBox[{"Om", "[", 
+        RowBox[{"l", ",", 
+         RowBox[{
+          RowBox[{"-", "m"}], "+", "1"}]}], "]"}], ",", 
+       SubscriptBox["Global`\[CapitalOmega]", 
+        RowBox[{
+         RowBox[{"ToString", "[", "l", "]"}], "<>", 
+         RowBox[{"ToString", "[", "m", "]"}]}]]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Shift", "[", 
+     RowBox[{"T_", ",", "q_", ",", "r_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "i", ",", "dim", ",", "rank", ",", "len", ",", "ind", ",", "Tf", ",", 
+        "Tnew", ",", "shape", ",", "m"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"shape", "=", 
+        RowBox[{"Dimensions", "[", "T", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"dim", "=", 
+        RowBox[{"shape", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"rank", "=", 
+        RowBox[{"Length", "[", "shape", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"r", ">", "rank"}], ",", 
+         RowBox[{"Return", "[", "\"\<r exceeds rank of tensor\>\"", "]"}]}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Total", "[", "shape", "]"}], "-", 
+           RowBox[{"dim", "*", "rank"}]}], "\[NotEqual]", "0"}], ",", 
+         RowBox[{
+         "Return", "[", "\"\<input array has nonuniform dimensionality\>\"", 
+          "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Tf", "=", 
+        RowBox[{"Flatten", "[", "T", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"len", "=", 
+        RowBox[{"Length", "[", "Tf", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Tnew", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{
+          RowBox[{"0", "&"}], ",", "len"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"m", "=", "1"}], ",", 
+         RowBox[{"m", "\[LessEqual]", "len"}], ",", 
+         RowBox[{"m", "++"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"ind", "=", 
+           RowBox[{
+            RowBox[{"IntegerDigits", "[", 
+             RowBox[{
+              RowBox[{"m", "-", "1"}], ",", "dim", ",", "rank"}], "]"}], "+", 
+            "1"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"i", "=", 
+           RowBox[{"ind", "[", 
+            RowBox[{"[", "r", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"i", "-", "q"}], "\[LessEqual]", "0"}], "||", 
+             RowBox[{
+              RowBox[{"i", "-", "q"}], ">", "dim"}]}], ",", 
+            RowBox[{
+             RowBox[{"Tnew", "[", 
+              RowBox[{"[", "m", "]"}], "]"}], "=", "0"}], ",", 
+            RowBox[{
+             RowBox[{"Tnew", "[", 
+              RowBox[{"[", "m", "]"}], "]"}], "=", 
+             RowBox[{"Tf", "[", 
+              RowBox[{"[", 
+               RowBox[{"m", "-", 
+                RowBox[{"q", "*", 
+                 SuperscriptBox["dim", 
+                  RowBox[{"rank", "-", "r"}]]}]}], "]"}], "]"}]}]}], "]"}], 
+          ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Return", "[", 
+        RowBox[{"ArrayReshape", "[", 
+         RowBox[{"Tnew", ",", "shape"}], "]"}], "]"}], ";"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"$Assumptions", "=", 
+     RowBox[{"r", ">", "0"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"GradGSH", "[", 
+     RowBox[{"T_", ",", "l_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "a", ",", "rad", ",", "ang", ",", "rank", ",", "omega1", ",", 
+        "omega2"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{
+        "Returns", " ", "gradient", " ", "of", " ", "tensor", " ", "T", " ", 
+         "with", " ", "harmonic", " ", "order", " ", 
+         RowBox[{"l", ".", " ", 
+          RowBox[{"rank", "[", "gradient", "]"}]}]}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{"rank", "[", "T", "]"}], "+", "1"}]}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"rank", "=", 
+        RowBox[{"Length", "[", 
+         RowBox[{"Dimensions", "[", "T", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"rad", "=", 
+        RowBox[{"TensorProduct", "[", 
+         RowBox[{
+          RowBox[{"UnitTensor", "[", "2", "]"}], ",", 
+          RowBox[{"D", "[", 
+           RowBox[{"T", ",", "r"}], "]"}]}], "]"}]}], ";", 
+       RowBox[{"(*", 
+        RowBox[{"radial", " ", "part", " ", "of", " ", "gradient"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"omega1", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Om", "[", 
+            RowBox[{"l", ",", 
+             RowBox[{
+              RowBox[{"Total", "[", 
+               RowBox[{"{", "##", "}"}], "]"}], "-", 
+              RowBox[{"2", "*", "rank"}]}]}], "]"}], "&"}], ",", 
+          RowBox[{"Dimensions", "[", "T", "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"omega2", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Om", "[", 
+            RowBox[{"l", ",", 
+             RowBox[{"-", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"Total", "[", 
+                 RowBox[{"{", "##", "}"}], "]"}], "-", 
+                RowBox[{"2", "*", "rank"}]}], ")"}]}]}], "]"}], "&"}], ",", 
+          RowBox[{"Dimensions", "[", "T", "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ang", "=", 
+        RowBox[{"TensorProduct", "[", 
+         RowBox[{
+          RowBox[{"UnitTensor", "[", "1", "]"}], ",", 
+          RowBox[{"omega1", "*", "T"}]}], "]"}]}], ";", 
+       RowBox[{"(*", 
+        RowBox[{"angular", " ", "part", " ", "of", " ", "gradient"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"ang", "+=", 
+        RowBox[{"TensorProduct", "[", 
+         RowBox[{
+          RowBox[{"UnitTensor", "[", "3", "]"}], ",", 
+          RowBox[{"omega2", "*", "T"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"a", "=", "1"}], ",", 
+         RowBox[{"a", "\[LessEqual]", "rank"}], ",", 
+         RowBox[{"a", "++"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"ang", "-=", 
+           RowBox[{"TensorProduct", "[", 
+            RowBox[{
+             RowBox[{"UnitTensor", "[", "1", "]"}], ",", 
+             RowBox[{"Shift", "[", 
+              RowBox[{"T", ",", "1", ",", "a"}], "]"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ang", "-=", 
+           RowBox[{"TensorProduct", "[", 
+            RowBox[{
+             RowBox[{"UnitTensor", "[", "3", "]"}], ",", 
+             RowBox[{"Shift", "[", 
+              RowBox[{"T", ",", 
+               RowBox[{"-", "1"}], ",", "a"}], "]"}]}], "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Return", "[", 
+        RowBox[{"rad", "+", 
+         FractionBox["ang", "r"]}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+     "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"End", "[", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Protect", "@@", 
+     RowBox[{"Names", "[", "\"\<GSH`*\>\"", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"EndPackage", "[", "]"}], ";"}]}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.764513145846992*^9, 3.764513245245227*^9}, {
+   3.764513288840226*^9, 3.7645133046690407`*^9}, {3.764514336932702*^9, 
+   3.764514338146469*^9}, {3.764514398934566*^9, 3.764514457126031*^9}, {
+   3.764514535150955*^9, 3.764514701358652*^9}, {3.76451474456537*^9, 
+   3.764514750511114*^9}, {3.764519258169772*^9, 3.7645192871146584`*^9}, {
+   3.764519364171094*^9, 3.764519375244462*^9}, {3.764519412826995*^9, 
+   3.7645194508428497`*^9}, {3.7645194876122723`*^9, 3.764519662396929*^9}, {
+   3.764519747923902*^9, 3.764519752774123*^9}, {3.764521017078628*^9, 
+   3.76452106997405*^9}, {3.764526195186359*^9, 3.764526223504011*^9}, {
+   3.764540218020627*^9, 3.764540264818737*^9}, {3.764540354015442*^9, 
+   3.76454036599844*^9}, {3.7645404964171333`*^9, 3.764540503007022*^9}, {
+   3.7645405803523283`*^9, 3.764540600303109*^9}, {3.7645406539691467`*^9, 
+   3.764540690560144*^9}, {3.764540721681396*^9, 3.764540741006936*^9}, {
+   3.764541125251042*^9, 3.764541140883745*^9}, {3.764541219813471*^9, 
+   3.764541225059394*^9}, {3.7645412635622387`*^9, 3.7645412684672203`*^9}, {
+   3.764541384276328*^9, 3.764541411048356*^9}, {3.7645414541654577`*^9, 
+   3.7645414585817127`*^9}, {3.764542018859972*^9, 3.7645420515761003`*^9}, {
+   3.764542094456951*^9, 3.764542175256158*^9}, {3.764542357113452*^9, 
+   3.764542364043832*^9}, {3.76454275769411*^9, 3.764542761343013*^9}, {
+   3.764543066446659*^9, 3.764543152757018*^9}, {3.7645432154406443`*^9, 
+   3.7645432459422207`*^9}, {3.7645435239228888`*^9, 3.764543532190744*^9}, {
+   3.7645436359460983`*^9, 3.764543680802314*^9}, {3.76454381434199*^9, 
+   3.764543831746887*^9}, {3.764545179098822*^9, 3.764545181209606*^9}, {
+   3.7645452504441957`*^9, 3.764545267995195*^9}, {3.764545678995121*^9, 
+   3.764545688148532*^9}, {3.764545728688043*^9, 3.764545783166098*^9}, {
+   3.764546945542335*^9, 3.764546948326174*^9}, {3.764546982582416*^9, 
+   3.764546983220792*^9}, {3.7645498152380657`*^9, 3.764549947826869*^9}, {
+   3.764550820654483*^9, 3.7645509867166643`*^9}, {3.764551137684403*^9, 
+   3.764551163120038*^9}, 3.76455208364468*^9, {3.764552116758659*^9, 
+   3.764552135797867*^9}, {3.76455221184975*^9, 3.7645522623408947`*^9}},
+ Background->None,
+ CellLabel->"In[52]:=",ExpressionUUID->"59ff417b-3bb9-4495-9ddd-a797aca58555"]
+},
+WindowSize->{1301, 744},
+WindowMargins->{{169, Automatic}, {23, Automatic}},
+FrontEndVersion->"11.3 for Linux x86 (64-bit) (March 6, 2018)",
+StyleDefinitions->"ReverseColor.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 15140, 360, 1866, "Input",ExpressionUUID->"59ff417b-3bb9-4495-9ddd-a797aca58555",
+ InitializationCell->True]
+}
+]
+*)
+
