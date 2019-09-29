@@ -40,7 +40,8 @@ ret=TensorProduct[ret,UnitTensor[A[[i]]]];
 Return[ret];
 )
 ]
-SpheInt[l1_,l2_,l3_,m1_,m2_,m3_,n1_,n2_,n3_,simp_:False]:=(-1)^(m1+n1) ThreeJ[l1,l2,l3,-m1,m2,m3]If[simp,ThreeJStd[l1,l2,l3,-n1,n2,n3],ThreeJ[l1,l2,l3,-n1,n2,n3]];
+SpheInt[l1_,l2_,l3_,m1_,m2_,m3_,n1_,n2_,n3_,simp_:False]:=
+(-1)^(m1+n1) ThreeJ[l1,l2,l3,-m1,m2,m3]If[simp,ThreeJStd[l1,l2,l3,-n1,n2,n3],ThreeJ[l1,l2,l3,-n1,n2,n3]];
 
 ThreeJ[l1_,l2_,l3_,m1_,m2_,m3_]:=Module[{ret},
 If[m1+m2+m3!=0,Return[0]];
@@ -93,7 +94,6 @@ Return[Simplify[ret]];
 
 Om[l_,m_]:=
 If[m<0||m==1,Om[l,-m+1],Subscript[Global`\[CapitalOmega], ToString[l]<>ToString[m]]];
-
 Shift[T_,q_,r_]:=Module[{i,dim,rank,len,ind,Tf,Tnew,shape,m},
 shape=Dimensions[T];
 dim=shape[[1]];
