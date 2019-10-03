@@ -10,7 +10,7 @@ It does not admit any argument.";
 UnitTensor::usage = 
 "UnitTensor[A_] returns tensor with 1 in slot A and 0 everywhere else. Rank = Length[A]. Dim = 3.\[IndentingNewLine]Rank = 1 if Length[A] = 0 i.e. A is an integer";
 SpheInt::usage=
-"SpheInt[l1_,l2_,l3_,m1_,m2_,m3_,n1_,n2_,n3_,simp_:False] is used to retrieve the symbolic form of the corresponding GSH integral with the first GSH being conjugated. The results is in terms of 3J symbols. If (optional) simp is true, 3J symbols will appear decomposed s.t lower rows are either 0,0,0 or -1,0,1. simp is False by default.";
+"SpheInt[l1_,l2_,l3_,m1_,m2_,m3_,n1_,n2_,n3_,simp_:False] is used to retrieve the symbolic form of the corresponding GSH integral with the first GSH being conjugated. The results is in terms of 3J symbols. If (optional) simp is true, 3J symbols will appear decomposed s.t lower rows are either 0,0,0 or -1,0,1. simp is False by default. Integral lack a prefactor of \!\(\*SqrtBox[FractionBox[\(\((2  l1 + 1)\) \((2  l2 + 1)\) \((2  l3 + 1)\)\), \(4  \[Pi]\)]]\)";
 ThreeJ::usage=
 "ThreeJ[l1_,l2_,l3_,m1_,m2_,m3_] is used to retrieve the symbolic form of a Wigner-3j";
 ThreeJStd::usage="Standard form of ThreeJ";
@@ -20,6 +20,7 @@ GradGSH::usage=
 "GradGSH[T_,l_] returns gradient of tensor T with harmonic order l. rank[gradient] = rank[T]+1";
 Om::usage=
 "Om[l_,m_] finds the value \!\(\*SqrtBox[\(\*FractionBox[\(1\), \(2\)] \((l \[PlusMinus] N)\) \((\(l \[MinusPlus] N\) + 1)\)\)]\) " ;
+Gam::usage="Gam[l_] returns \!\(\*SubscriptBox[\(\[Gamma]\), \(l\)]\) and stands for the value \!\(\*SqrtBox[FractionBox[\(2  l + 1\), \(4  \[Pi]\)]]\)";
 r::usage="r";
 
 Begin["`Private`"];
@@ -39,7 +40,8 @@ ret=TensorProduct[ret,UnitTensor[A[[i]]]];
 Return[ret];
 )
 ]
-SpheInt[l1_,l2_,l3_,m1_,m2_,m3_,n1_,n2_,n3_,simp_:False]:=(-1)^(m1+n1) ThreeJ[l1,l2,l3,-m1,m2,m3]If[simp,ThreeJStd[l1,l2,l3,-n1,n2,n3],ThreeJ[l1,l2,l3,-n1,n2,n3]];
+SpheInt[l1_,l2_,l3_,m1_,m2_,m3_,n1_,n2_,n3_,simp_:False]:=
+(-1)^(m1+n1) ThreeJ[l1,l2,l3,-m1,m2,m3]If[simp,ThreeJStd[l1,l2,l3,-n1,n2,n3],ThreeJ[l1,l2,l3,-n1,n2,n3]];
 
 ThreeJ[l1_,l2_,l3_,m1_,m2_,m3_]:=Module[{ret},
 If[m1+m2+m3!=0,Return[0]];
@@ -92,7 +94,6 @@ Return[Simplify[ret]];
 
 Om[l_,m_]:=
 If[m<0||m==1,Om[l,-m+1],Subscript[Global`\[CapitalOmega], ToString[l]<>ToString[m]]];
-
 Shift[T_,q_,r_]:=Module[{i,dim,rank,len,ind,Tf,Tnew,shape,m},
 shape=Dimensions[T];
 dim=shape[[1]];
@@ -125,6 +126,7 @@ ang-=TensorProduct[UnitTensor[3],Shift[T,-1,a]];
 ];
 Return[rad+ang/r];
 ]
+Gam[l_]:=Subscript[Global`\[Gamma], ToString[l]];
 
 End[];
 Protect@@Names["GSH`*"];
